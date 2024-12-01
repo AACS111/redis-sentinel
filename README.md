@@ -166,7 +166,7 @@ Docker Compose 是 Docker 提供的一个工具，用于定义和运行多容器
 		    container_name: redis-slave1
 		    ports:
 		      - "6480:6379"
-		 	#绑定数据卷，方便指向对应节点的配置文件和数据存放文件
+		    #绑定数据卷，方便指向对应节点的配置文件和数据存放文件
 		    volumes:
 		      - ./config/redis-slave1.conf:/usr/local/etc/redis/redis.conf
 		      - ./data/slave1:/data
