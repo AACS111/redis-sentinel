@@ -1,0 +1,28 @@
+services:
+  sentinel1:
+    image: redis:6.0
+    container_name: sentinel1
+    ports:
+      - "26379:26379"
+    volumes:
+      - ./sentinel1:/usr/local/etc/redis
+    #--sentinel 表示将启动一个 Sentinel 实例，不加则表示启动的普通实例
+    command: redis-sentinel /usr/local/etc/redis/sentinel1.conf  --sentinel
+
+  sentinel2:
+    image: redis:6.0
+    container_name: sentinel2
+    ports:
+      - "26380:26379"
+    volumes:
+      - ./sentinel2:/usr/local/etc/redis
+    command: redis-sentinel /usr/local/etc/redis/sentinel2.conf  --sentinel
+
+  sentinel3:
+    image: redis:6.0
+    container_name: sentinel3
+    ports:
+      - "26381:26379"
+    volumes:
+      - ./sentinel3:/usr/local/etc/redis
+    command: redis-sentinel /usr/local/etc/redis/sentinel3.conf  --sentinel

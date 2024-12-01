@@ -1,0 +1,44 @@
+services:
+#主节点
+  redis-master:
+  # 版本
+    image: redis:6.0
+    container_name: redis-master
+    ports:
+      - "6479:6379"
+    #绑定数据卷，方便指向对应节点的配置文件和数据存放文件
+    volumes:
+      - ./config/redis-master.conf:/usr/local/etc/redis/redis.conf
+      - ./data/master:/data
+    #添加配置,指定配置文件位置，为映射到容器的配置文件位置
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+ #从节点1
+  redis-slave1:
+    image: redis:6.0
+    container_name: redis-slave1
+    ports:
+      - "6480:6379"
+ 	#绑定数据卷，方便指向对应节点的配置文件和数据存放文件
+    volumes:
+      - ./config/redis-slave1.conf:/usr/local/etc/redis/redis.conf
+      - ./data/slave1:/data
+    #添加配置
+    depends_on:
+      - redis-master
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  redis-slave2:
+    image: redis:6.0
+    container_name: redis-slave2
+
+    ports:
+      - "6481:6379"
+    volumes:
+      - ./config/redis-slave2.conf:/usr/local/etc/redis/redis.conf
+      - ./data/slave2:/data
+    depends_on:
+      - redis-master
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+# 这个地方注意不能自定义创建网络，服装外部服务不能连接
+# networks:
+#   redisco:
